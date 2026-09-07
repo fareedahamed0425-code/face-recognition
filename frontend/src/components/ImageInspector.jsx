@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { Scan, Upload, Copy, Check, Sparkles } from 'lucide-react';
+import { Scan, Upload, Copy, Check, Sparkles, Image as ImageIcon } from 'lucide-react';
 
 export default function ImageInspector({
   imagePreview,
   onImageSelected,
+  onSelectSample,
   faceData,
   imageHash,
   isProcessing
@@ -67,15 +68,15 @@ export default function ImageInspector({
             {isProcessing && <div className="scan-laser-goa" />}
           </>
         ) : (
-          <div style={{ textAlign: 'center', padding: '24px' }}>
-            <div style={{ width: 50, height: 50, borderRadius: '50%', background: '#ffd000', border: '2px solid #021a0e', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px', boxShadow: '2px 2px 0px #021a0e' }}>
-              <Upload style={{ width: 24, height: 24, color: '#021a0e' }} />
+          <div style={{ textAlign: 'center', padding: '20px' }}>
+            <div style={{ width: 48, height: 48, borderRadius: '50%', background: '#ffd000', border: '2px solid #021a0e', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px', boxShadow: '2px 2px 0px #021a0e' }}>
+              <Upload style={{ width: 22, height: 22, color: '#021a0e' }} />
             </div>
             <div style={{ fontSize: '0.95rem', fontWeight: 900, fontFamily: 'var(--font-display)', color: '#021a0e' }}>
-              Upload Subject Photo 📸
+              Upload Face Photo 📸
             </div>
-            <div style={{ fontSize: '0.75rem', color: '#0d5c36', fontWeight: 700, marginTop: '4px' }}>
-              PNG, JPG, WEBP (Max 10MB)
+            <div style={{ fontSize: '0.74rem', color: '#0d5c36', fontWeight: 700, marginTop: '2px' }}>
+              Click to browse or drop image
             </div>
           </div>
         )}
@@ -87,6 +88,36 @@ export default function ImageInspector({
           style={{ display: 'none' }}
           onChange={handleFileChange}
         />
+      </div>
+
+      {/* Instant Benchmark Presets */}
+      <div>
+        <div style={{ fontSize: '0.72rem', color: '#094528', fontWeight: 800, marginBottom: '6px', fontFamily: 'var(--font-display)' }}>
+          ⚡ OR TRY INSTANT BENCHMARK SAMPLES:
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
+          <button
+            onClick={() => onSelectSample('sample_portrait')}
+            disabled={isProcessing}
+            style={{ padding: '6px 8px', borderRadius: '6px', background: '#ffffff', border: '1.5px solid #021a0e', color: '#021a0e', fontFamily: 'var(--font-display)', fontSize: '0.72rem', fontWeight: 800, cursor: 'pointer', boxShadow: '1.5px 1.5px 0px #021a0e' }}
+          >
+            🌴 Model
+          </button>
+          <button
+            onClick={() => onSelectSample('sample_benchmark')}
+            disabled={isProcessing}
+            style={{ padding: '6px 8px', borderRadius: '6px', background: '#ffffff', border: '1.5px solid #021a0e', color: '#021a0e', fontFamily: 'var(--font-display)', fontSize: '0.72rem', fontWeight: 800, cursor: 'pointer', boxShadow: '1.5px 1.5px 0px #021a0e' }}
+          >
+            📸 Subject
+          </button>
+          <button
+            onClick={() => onSelectSample('sample_tech')}
+            disabled={isProcessing}
+            style={{ padding: '6px 8px', borderRadius: '6px', background: '#ffffff', border: '1.5px solid #021a0e', color: '#021a0e', fontFamily: 'var(--font-display)', fontSize: '0.72rem', fontWeight: 800, cursor: 'pointer', boxShadow: '1.5px 1.5px 0px #021a0e' }}
+          >
+            ⚡ Portrait
+          </button>
+        </div>
       </div>
 
       {imagePreview && (

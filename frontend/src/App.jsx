@@ -10,9 +10,16 @@ import ActivityLog from './components/ActivityLog';
 
 const API_BASE = 'http://localhost:8000';
 
+const SAMPLE_PREVIEWS = {
+  'sample_portrait': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&q=80',
+  'sample_benchmark': 'https://raw.githubusercontent.com/opencv/opencv/master/samples/data/lena.jpg',
+  'sample_tech': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80'
+};
+
 export default function App() {
   const [health, setHealth] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedSampleId, setSelectedSampleId] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [activeStage, setActiveStage] = useState(null);
@@ -43,6 +50,7 @@ export default function App() {
 
   const handleImageSelected = (file) => {
     setSelectedFile(file);
+    setSelectedSampleId(null);
     const reader = new FileReader();
     reader.onload = (e) => setImagePreview(e.target.result);
     reader.readAsDataURL(file);
@@ -59,8 +67,26 @@ export default function App() {
     addLog('IMAGE', `Image selected: ${file.name} (${Math.round(file.size / 1024)} KB)`);
   };
 
+  const handleSelectSample = (sampleId) => {
+    setSelectedSampleId(sampleId);
+    setSelectedFile(null);
+    setImagePreview(SAMPLE_PREVIEWS[sampleId] || null);
+
+    setPipelineData(null);
+    setErrorMessage(null);
+    setStageStatus({
+      image: 'success',
+      face_id: 'pending',
+      reverse_search: 'pending',
+      verify: 'pending',
+      blockchain: 'pending'
+    });
+    addLog('IMAGE', `Loaded benchmark subject: ${sampleId}`);
+  };
+
   const handleReset = () => {
     setSelectedFile(null);
+    setSelectedSampleId(null);
     setImagePreview(null);
     setPipelineData(null);
     setIsProcessing(false);
@@ -77,7 +103,7 @@ export default function App() {
   };
 
   const handleRunVerification = async () => {
-    if (!selectedFile && !imagePreview) {
+    if (!selectedFile && !selectedSampleId && !imagePreview) {
       setErrorMessage('Please upload or select an input image first.');
       return;
     }
@@ -99,6 +125,8 @@ export default function App() {
       const formData = new FormData();
       if (selectedFile) {
         formData.append('file', selectedFile);
+      } else if (selectedSampleId) {
+        formData.append('sample_id', selectedSampleId);
       }
 
       setTimeout(() => {
@@ -199,7 +227,7 @@ export default function App() {
       <main className="main-workspace">
         <div className="max-container">
           
-          {/* Action Banner with Goa Theme */}
+          {/* Action Banner */}
           <div className="action-banner-goa">
             <div className="action-banner-info">
               <h2>🌴 Single-Click Verification Pipeline</h2>
@@ -218,7 +246,7 @@ export default function App() {
 
               <button
                 onClick={handleRunVerification}
-                disabled={isProcessing || (!selectedFile && !imagePreview)}
+                disabled={isProcessing || (!selectedFile && !selectedSampleId && !imagePreview)}
                 className="glow-btn-pink"
               >
                 <Play style={{ width: 18, height: 18, fill: '#ffffff' }} />
@@ -240,6 +268,7 @@ export default function App() {
             <ImageInspector
               imagePreview={imagePreview}
               onImageSelected={handleImageSelected}
+              onSelectSample={handleSelectSample}
               faceData={pipelineData?.stages?.face_detection}
               imageHash={pipelineData?.stages?.input_image?.sha256}
               isProcessing={isProcessing}
