@@ -36,13 +36,13 @@ export default function PipelineTracker({ stageStatus, activeStage }) {
             const isCurrent = activeStage === stage.id;
 
             return (
-              <div key={stage.id} className={`stage-card ${isCurrent ? 'is-current' : ''}`}>
+              <div key={stage.id} className={`stage-stamp-card ${isCurrent ? 'is-current' : ''}`}>
                 <div className="stage-header-row">
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Icon style={{ width: 15, height: 15, color: isCurrent ? '#06b6d4' : '#94a3b8' }} />
+                    <Icon style={{ width: 16, height: 16, color: '#0d5c36' }} />
                     <span className="stage-title">{stage.label}</span>
                   </div>
-                  <span className={`stage-badge ${badge.cls}`}>
+                  <span className={`stage-badge-goa ${badge.cls}`}>
                     {badge.icon}
                     <span>{badge.text}</span>
                   </span>

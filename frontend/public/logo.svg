@@ -1,79 +1,44 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="100%" height="100%" fill="none">
   <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0b111e"/>
-      <stop offset="50%" stop-color="#0e172a"/>
-      <stop offset="100%" stop-color="#070c16"/>
+    <linearGradient id="sunGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffe600"/>
+      <stop offset="100%" stop-color="#ffb703"/>
     </linearGradient>
-    
-    <linearGradient id="neonCyan" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#38bdf8"/>
-      <stop offset="100%" stop-color="#06b6d4"/>
-    </linearGradient>
-
-    <linearGradient id="neonBlue" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#60a5fa"/>
-      <stop offset="100%" stop-color="#2563eb"/>
-    </linearGradient>
-
-    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#34d399"/>
-      <stop offset="100%" stop-color="#059669"/>
-    </linearGradient>
-
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="3.5" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
-
-    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="6" result="blur2" />
-      <feComposite in="SourceGraphic" in2="blur2" operator="over" />
+    <filter id="popShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="3" dy="3" stdDeviation="0" flood-color="#021f12" />
     </filter>
   </defs>
 
-  <!-- Background Shield Polygon -->
-  <polygon points="60,6 108,24 108,70 60,114 12,70 12,24" fill="url(#bgGrad)" stroke="#1e293b" stroke-width="2.5" />
-  <polygon points="60,12 102,28 102,67 60,107 18,67 18,28" fill="none" stroke="url(#neonCyan)" stroke-width="1.2" opacity="0.4" />
+  <!-- Background Circle Badge -->
+  <rect x="6" y="6" width="128" height="128" rx="28" fill="#0d5c36" stroke="#021f12" stroke-width="4" />
+  
+  <!-- Sunshine Rays -->
+  <path d="M 70 30 L 70 14" stroke="#ffd000" stroke-width="4" stroke-linecap="round" />
+  <path d="M 46 36 L 34 24" stroke="#ffd000" stroke-width="4" stroke-linecap="round" />
+  <path d="M 94 36 L 106 24" stroke="#ffd000" stroke-width="4" stroke-linecap="round" />
+  <path d="M 30 54 L 14 50" stroke="#ffd000" stroke-width="4" stroke-linecap="round" />
+  <path d="M 110 54 L 126 50" stroke="#ffd000" stroke-width="4" stroke-linecap="round" />
 
-  <!-- Outer Holographic Corner Brackets -->
-  <path d="M 28 34 L 28 26 L 36 26" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" fill="none" />
-  <path d="M 92 34 L 92 26 L 84 26" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" fill="none" />
-  <path d="M 28 76 L 28 84 L 36 84" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" fill="none" />
-  <path d="M 92 76 L 92 84 L 84 84" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" fill="none" />
+  <!-- Rising Sun -->
+  <circle cx="70" cy="68" r="32" fill="url(#sunGrad)" stroke="#021f12" stroke-width="3" />
 
-  <!-- Biometric Face Scanning Mesh Lines -->
-  <g filter="url(#glow)">
-    <!-- Face Contour Mesh -->
-    <path d="M 40 46 C 40 34, 80 34, 80 46 C 80 66, 72 80, 60 84 C 48 80, 40 66, 40 46 Z" fill="none" stroke="url(#neonCyan)" stroke-width="2" stroke-dasharray="1 2.5" />
-    
-    <!-- Eye Landmark Points -->
-    <circle cx="49" cy="48" r="3.5" fill="#38bdf8" />
-    <circle cx="71" cy="48" r="3.5" fill="#38bdf8" />
-    <circle cx="49" cy="48" r="7" fill="none" stroke="#06b6d4" stroke-width="1" opacity="0.6" />
-    <circle cx="71" cy="48" r="7" fill="none" stroke="#06b6d4" stroke-width="1" opacity="0.6" />
+  <!-- Palm Fronds Silhouette (Left) -->
+  <path d="M 24 100 Q 40 76 56 74 Q 46 88 44 102" fill="#094528" stroke="#021f12" stroke-width="2.5" />
+  <path d="M 22 84 Q 38 68 54 72 Q 40 78 30 92" fill="#107545" stroke="#021f12" stroke-width="2" />
+  
+  <!-- Palm Fronds Silhouette (Right) -->
+  <path d="M 116 100 Q 100 76 84 74 Q 94 88 96 102" fill="#094528" stroke="#021f12" stroke-width="2.5" />
+  <path d="M 118 84 Q 102 68 86 72 Q 100 78 110 92" fill="#107545" stroke="#021f12" stroke-width="2" />
 
-    <!-- Nose & Mouth Mesh Connections -->
-    <path d="M 60 48 L 56 60 L 64 60 Z" fill="none" stroke="#60a5fa" stroke-width="1.5" />
-    <path d="M 52 70 Q 60 74 68 70" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" />
-    
-    <!-- Biometric Cross-Grid Nodes -->
-    <line x1="34" y1="48" x2="86" y2="48" stroke="#06b6d4" stroke-width="1" opacity="0.4" stroke-dasharray="2 3" />
-    <line x1="60" y1="28" x2="60" y2="88" stroke="#06b6d4" stroke-width="1" opacity="0.4" stroke-dasharray="2 3" />
+  <!-- Hot Pink MINDBRIDGE Banner -->
+  <g filter="url(#popShadow)">
+    <rect x="18" y="96" width="104" height="26" rx="6" fill="#ff007f" stroke="#021f12" stroke-width="3" transform="rotate(-3 70 109)" />
+    <text x="70" y="114" font-family="'Plus Jakarta Sans', Impact, sans-serif" font-weight="900" font-size="13" fill="#ffffff" text-anchor="middle" letter-spacing="1" transform="rotate(-3 70 109)">MINDBRIDGE</text>
   </g>
 
-  <!-- Isometric Blockchain Block (Lower Anchor) -->
-  <g transform="translate(60, 94) scale(0.65)" filter="url(#glow)">
-    <!-- Top Face -->
-    <polygon points="0,-18 20,-8 0,2 -20,-8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.8" />
-    <!-- Left Face -->
-    <polygon points="-20,-8 0,2 0,24 -20,14" fill="#0f172a" stroke="#0284c7" stroke-width="1.8" />
-    <!-- Right Face -->
-    <polygon points="0,2 20,-8 20,14 0,24" fill="#0284c7" stroke="#38bdf8" stroke-width="1.8" />
-    <!-- Center Chain Link Node -->
-    <circle cx="0" cy="2" r="3" fill="#34d399" />
-  </g>
-
-  <!-- Scanning Radar Beam -->
-  <line x1="24" y1="56" x2="96" y2="56" stroke="#38bdf8" stroke-width="2" opacity="0.85" filter="url(#softGlow)" />
+  <!-- Biometric Mesh Node in Sun -->
+  <circle cx="60" cy="62" r="3.5" fill="#ff007f" stroke="#021f12" stroke-width="1.5" />
+  <circle cx="80" cy="62" r="3.5" fill="#ff007f" stroke="#021f12" stroke-width="1.5" />
+  <path d="M 64 74 Q 70 78 76 74" stroke="#021f12" stroke-width="2.5" stroke-linecap="round" fill="none" />
+  <line x1="60" y1="62" x2="80" y2="62" stroke="#021f12" stroke-width="1.5" stroke-dasharray="2 2" />
 </svg>

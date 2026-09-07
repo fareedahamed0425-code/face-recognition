@@ -7,44 +7,46 @@ export default function SearchResultsView({ searchData, isProcessing }) {
   const hasSearched = Boolean(searchData);
 
   return (
-    <div className="tech-card">
+    <div className="goa-card">
       <div className="card-header-row">
         <div className="card-title-box">
-          <Globe style={{ width: 16, height: 16, color: '#3b82f6' }} />
+          <Globe style={{ width: 18, height: 18, color: '#0d5c36' }} />
           <span className="card-title">2. Reverse Image Search</span>
         </div>
         {searchData && (
-          <span className={`stage-badge ${matches.length > 0 ? 'badge-success' : 'badge-warning'}`}>
+          <span className={`stage-badge-goa ${matches.length > 0 ? 'badge-success' : 'badge-warning'}`}>
             {matches.length} MATCH{matches.length !== 1 ? 'ES' : ''}
           </span>
         )}
       </div>
 
       {!hasSearched ? (
-        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#64748b', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#111726', border: '1px solid #1e293d', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
-            <Search style={{ width: 20, height: 20, color: '#64748b' }} />
+        <div style={{ textAlign: 'center', padding: '60px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: 50, height: 50, borderRadius: '50%', background: '#ffd000', border: '2px solid #021a0e', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', boxShadow: '2px 2px 0px #021a0e' }}>
+            <Search style={{ width: 24, height: 24, color: '#021a0e' }} />
           </div>
-          <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#cbd5e1' }}>Search Pending Execution</div>
-          <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '4px', maxWidth: '240px' }}>
+          <div style={{ fontSize: '0.95rem', fontWeight: 900, fontFamily: 'var(--font-display)', color: '#021a0e' }}>
+            Search Pending Execution 🔍
+          </div>
+          <div style={{ fontSize: '0.75rem', color: '#0d5c36', fontWeight: 700, marginTop: '4px', maxWidth: '240px' }}>
             Click Run Verification to query Google Lens in real time.
           </div>
         </div>
       ) : bestMatch ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <div className="match-card">
+          <div className="match-card-goa">
             <div className="match-header-row">
-              <span className="platform-tag">{bestMatch.platform.toUpperCase()}</span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#06b6d4', fontWeight: 700 }}>
+              <span className="platform-tag-goa">{bestMatch.platform.toUpperCase()}</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#0d5c36', fontWeight: 900 }}>
                 CONFIDENCE: {bestMatch.confidence_percentage}
               </span>
             </div>
 
-            <div className="match-img-frame">
+            <div className="match-img-frame-goa">
               {bestMatch.matched_image_url ? (
                 <img src={bestMatch.matched_image_url} alt="Matched Candidate" />
               ) : (
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#64748b' }}>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#e2f0d9', fontWeight: 700 }}>
                   Visual reference verified
                 </div>
               )}
@@ -56,33 +58,33 @@ export default function SearchResultsView({ searchData, isProcessing }) {
               href={bestMatch.source_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="match-link"
+              className="match-link-goa"
             >
-              <ExternalLink style={{ width: 12, height: 12, flexShrink: 0 }} />
+              <ExternalLink style={{ width: 14, height: 14, flexShrink: 0 }} />
               <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {bestMatch.source_url}
               </span>
             </a>
           </div>
 
-          <div className="mono-box" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          <div className="mono-box-goa" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#64748b' }}>ENGINE:</span>
-              <span style={{ color: '#f1f5f9', fontWeight: 700 }}>{searchData.engine_used}</span>
+              <span style={{ color: '#475569' }}>ENGINE:</span>
+              <span style={{ color: '#021a0e', fontWeight: 800 }}>{searchData.engine_used}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#64748b' }}>LATENCY:</span>
-              <span style={{ color: '#10b981', fontWeight: 700 }}>{searchData.processing_time_ms}ms</span>
+              <span style={{ color: '#475569' }}>LATENCY:</span>
+              <span style={{ color: '#0d5c36', fontWeight: 900 }}>{searchData.processing_time_ms}ms</span>
             </div>
           </div>
         </div>
       ) : (
-        <div style={{ textAlign: 'center', padding: '40px 20px', background: '#0a0e17', border: '1px solid #1e293d', borderRadius: '10px' }}>
-          <AlertTriangle style={{ width: 28, height: 28, color: '#f59e0b', margin: '0 auto 10px' }} />
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700, color: '#cbd5e1' }}>
+        <div style={{ textAlign: 'center', padding: '40px 20px', background: '#ffffff', border: '2px solid #021a0e', borderRadius: '10px', boxShadow: '2px 2px 0px #021a0e' }}>
+          <AlertTriangle style={{ width: 32, height: 32, color: '#f59e0b', margin: '0 auto 10px' }} />
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.95rem', fontWeight: 900, color: '#021a0e' }}>
             NO GENUINE MATCH FOUND
           </div>
-          <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '6px' }}>
+          <div style={{ fontSize: '0.75rem', color: '#475569', fontWeight: 600, marginTop: '6px' }}>
             {searchData.status_message}
           </div>
         </div>

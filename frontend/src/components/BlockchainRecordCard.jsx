@@ -6,7 +6,7 @@ export default function BlockchainRecordCard({ blockchainData }) {
 
   if (!blockchainData) {
     return (
-      <div className="mono-box" style={{ textAlign: 'center', padding: '16px', color: '#64748b' }}>
+      <div className="mono-box-goa" style={{ textAlign: 'center', padding: '16px', color: '#64748b' }}>
         Blockchain transaction proof pending execution...
       </div>
     );
@@ -21,42 +21,42 @@ export default function BlockchainRecordCard({ blockchainData }) {
   };
 
   return (
-    <div className="blockchain-card-box">
+    <div className="blockchain-card-box-goa">
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: '#38bdf8', fontWeight: 700 }}>
-          <Blocks style={{ width: 14, height: 14, color: '#38bdf8' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'var(--font-display)', fontSize: '0.88rem', color: '#0d5c36', fontWeight: 900 }}>
+          <Blocks style={{ width: 18, height: 18, color: '#0d5c36' }} />
           <span>{blockchainData.network}</span>
         </div>
-        <span className="stage-badge badge-success">
-          <CheckCircle2 style={{ width: 10, height: 10 }} />
+        <span className="stage-badge-goa badge-success">
+          <CheckCircle2 style={{ width: 12, height: 12 }} />
           <span>{blockchainData.status}</span>
         </span>
       </div>
 
       <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.68rem', color: '#64748b', fontFamily: 'var(--font-mono)', marginBottom: '3px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: '#475569', fontWeight: 800, fontFamily: 'var(--font-mono)', marginBottom: '3px' }}>
           <span>TRANSACTION HASH:</span>
           <button
             onClick={handleCopyTx}
-            style={{ background: 'none', border: 'none', color: '#38bdf8', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '3px', fontSize: '0.68rem' }}
+            style={{ background: 'none', border: 'none', color: '#ff007f', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '3px', fontSize: '0.72rem' }}
           >
-            {copiedTx ? <Check style={{ width: 10, height: 10, color: '#10b981' }} /> : <Copy style={{ width: 10, height: 10 }} />}
+            {copiedTx ? <Check style={{ width: 12, height: 12, color: '#10b981' }} /> : <Copy style={{ width: 12, height: 12 }} />}
             <span>{copiedTx ? 'COPIED' : 'COPY'}</span>
           </button>
         </div>
-        <div className="mono-box" style={{ color: '#06b6d4', padding: '6px 10px', fontSize: '0.7rem' }}>
+        <div className="mono-box-goa" style={{ color: '#0d5c36', padding: '8px 10px', fontSize: '0.74rem' }}>
           {blockchainData.transaction_hash}
         </div>
       </div>
 
-      <div className="stat-grid">
-        <div className="stat-box">
+      <div className="stat-grid-goa">
+        <div className="stat-box-goa">
           <div className="stat-label">BLOCK NUMBER</div>
           <div className="stat-val">#{blockchainData.block_number}</div>
         </div>
-        <div className="stat-box">
+        <div className="stat-box-goa">
           <div className="stat-label">GAS CONSUMED</div>
-          <div className="stat-val" style={{ color: '#10b981' }}>{blockchainData.gas_used.toLocaleString()}</div>
+          <div className="stat-val" style={{ color: '#0d5c36' }}>{blockchainData.gas_used.toLocaleString()}</div>
         </div>
       </div>
 
@@ -64,9 +64,9 @@ export default function BlockchainRecordCard({ blockchainData }) {
         href={blockchainData.explorer_url}
         target="_blank"
         rel="noopener noreferrer"
-        className="explorer-btn"
+        className="explorer-btn-goa"
       >
-        <ExternalLink style={{ width: 14, height: 14 }} />
+        <ExternalLink style={{ width: 16, height: 16 }} />
         <span>VIEW ON BLOCK EXPLORER</span>
       </a>
     </div>

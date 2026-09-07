@@ -17,7 +17,6 @@ export default function App() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [activeStage, setActiveStage] = useState(null);
 
-  // Pipeline Stage Status: pending | processing | success | failed | warning
   const [stageStatus, setStageStatus] = useState({
     image: 'pending',
     face_id: 'pending',
@@ -26,12 +25,10 @@ export default function App() {
     blockchain: 'pending'
   });
 
-  // Pipeline Data State
   const [pipelineData, setPipelineData] = useState(null);
   const [logs, setLogs] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  // Fetch API Health on load
   useEffect(() => {
     fetch(`${API_BASE}/api/health`)
       .then(res => res.json())
@@ -87,7 +84,7 @@ export default function App() {
 
     setIsProcessing(true);
     setErrorMessage(null);
-    addLog('SYSTEM', 'Initiating complete Face ID + Blockchain verification pipeline...');
+    addLog('SYSTEM', 'Initiating MINDBRIDGE Face ID + Blockchain verification pipeline...');
 
     setStageStatus({
       image: 'processing',
@@ -166,6 +163,8 @@ export default function App() {
   const handleExportAudit = () => {
     if (!pipelineData) return;
     const exportObj = {
+      team: 'MINDBRIDGE',
+      event: 'Hacker House Goa 2026',
       title: 'Face ID + Blockchain Tamper-Evident Verification Audit',
       exported_at: new Date().toISOString(),
       audit_record: pipelineData.audit_record,
@@ -178,7 +177,7 @@ export default function App() {
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportObj, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute('href', dataStr);
-    downloadAnchor.setAttribute('download', `audit_proof_${pipelineData.audit_record?.record_id?.slice(0, 10)}.json`);
+    downloadAnchor.setAttribute('download', `mindbridge_audit_${pipelineData.audit_record?.record_id?.slice(0, 10)}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -200,38 +199,38 @@ export default function App() {
       <main className="main-workspace">
         <div className="max-container">
           
-          {/* Action Banner */}
-          <div className="action-banner">
+          {/* Action Banner with Goa Theme */}
+          <div className="action-banner-goa">
             <div className="action-banner-info">
-              <h2>Single-Click Forensic Pipeline Execution</h2>
-              <p>Detects face geometry, queries live Google Lens reverse-image sources, verifies biometrics, and anchors proof on-chain.</p>
+              <h2>🌴 Single-Click Verification Pipeline</h2>
+              <p>Extracts 128D facial embeddings, executes live Google Lens reverse-image search, verifies biometrics, and commits proof on-chain.</p>
             </div>
 
             <div className="action-btn-group">
               <button
                 onClick={handleReset}
                 disabled={isProcessing || (!imagePreview && !pipelineData)}
-                className="secondary-btn"
+                className="secondary-btn-sand"
               >
-                <RotateCcw style={{ width: 14, height: 14 }} />
+                <RotateCcw style={{ width: 16, height: 16 }} />
                 <span>Reset</span>
               </button>
 
               <button
                 onClick={handleRunVerification}
                 disabled={isProcessing || (!selectedFile && !imagePreview)}
-                className="glow-btn"
+                className="glow-btn-pink"
               >
-                <Play style={{ width: 14, height: 14, fill: 'currentColor' }} />
-                <span>{isProcessing ? 'VERIFYING PIPELINE...' : 'RUN VERIFICATION'}</span>
+                <Play style={{ width: 18, height: 18, fill: '#ffffff' }} />
+                <span>{isProcessing ? 'VERIFYING...' : 'RUN VERIFICATION 🌴'}</span>
               </button>
             </div>
           </div>
 
           {/* Error Alert */}
           {errorMessage && (
-            <div style={{ padding: '12px 16px', borderRadius: '8px', background: 'rgba(244, 63, 94, 0.15)', border: '1px solid #f43f5e', color: '#fb7185', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px', fontFamily: 'var(--font-mono)' }}>
-              <AlertCircle style={{ width: 16, height: 16, color: '#f43f5e', flexShrink: 0 }} />
+            <div style={{ padding: '14px 18px', borderRadius: '10px', background: '#fee2e2', border: '2px solid #ef4444', color: '#991b1b', fontSize: '0.85rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px', fontFamily: 'var(--font-mono)', boxShadow: '3px 3px 0px #021a0e' }}>
+              <AlertCircle style={{ width: 18, height: 18, color: '#ef4444', flexShrink: 0 }} />
               <span>{errorMessage}</span>
             </div>
           )}
@@ -251,14 +250,14 @@ export default function App() {
               isProcessing={isProcessing}
             />
 
-            <div className="tech-card">
+            <div className="goa-card">
               <div className="card-header-row">
                 <div className="card-title-box">
-                  <Shield style={{ width: 16, height: 16, color: '#10b981' }} />
+                  <Shield style={{ width: 18, height: 18, color: '#0d5c36' }} />
                   <span className="card-title">3. Verification & Blockchain</span>
                 </div>
                 {pipelineData?.stages?.blockchain && (
-                  <span className="stage-badge badge-success">ON-CHAIN PROOF</span>
+                  <span className="stage-badge-goa badge-success">ON-CHAIN PROOF</span>
                 )}
               </div>
 
@@ -280,8 +279,8 @@ export default function App() {
         </div>
       </main>
 
-      <footer className="console-footer">
-        Face ID + Blockchain Verification Pipeline • EVM Smart Contract Registry & Reverse-Image Biometrics
+      <footer className="console-footer-goa">
+        TEAM MINDBRIDGE • Hacker House Goa 2026 • Face ID + Blockchain Verification Pipeline
       </footer>
     </div>
   );

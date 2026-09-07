@@ -17,40 +17,40 @@ export default function ActivityLog({ logs, onClearLogs }) {
   };
 
   return (
-    <div className="terminal-card">
+    <div className="terminal-card-goa">
       <div className="terminal-header-row">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Terminal style={{ width: 16, height: 16, color: '#10b981' }} />
-          <span className="card-title">Forensic Activity / Technical Execution Log</span>
-          <span className="stage-badge badge-pending">{logs.length} EVENTS</span>
+          <Terminal style={{ width: 18, height: 18, color: '#0d5c36' }} />
+          <span className="card-title">Forensic Activity / Execution Log</span>
+          <span className="stage-badge-goa badge-pending">{logs.length} EVENTS</span>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <button
             onClick={handleCopyLogs}
             disabled={logs.length === 0}
-            className="secondary-btn"
-            style={{ padding: '4px 10px', fontSize: '0.72rem' }}
+            className="secondary-btn-sand"
+            style={{ padding: '6px 12px', fontSize: '0.75rem' }}
           >
-            {copied ? <Check style={{ width: 12, height: 12, color: '#10b981' }} /> : <Copy style={{ width: 12, height: 12 }} />}
+            {copied ? <Check style={{ width: 14, height: 14, color: '#10b981' }} /> : <Copy style={{ width: 14, height: 14 }} />}
             <span>{copied ? 'COPIED' : 'COPY LOG'}</span>
           </button>
           <button
             onClick={onClearLogs}
             disabled={logs.length === 0}
-            className="secondary-btn"
-            style={{ padding: '4px 8px' }}
+            className="secondary-btn-sand"
+            style={{ padding: '6px 10px' }}
             title="Clear Log"
           >
-            <Trash2 style={{ width: 12, height: 12, color: '#f43f5e' }} />
+            <Trash2 style={{ width: 14, height: 14, color: '#ef4444' }} />
           </button>
         </div>
       </div>
 
-      <div className="terminal-window">
+      <div className="terminal-window-goa">
         {logs.length === 0 ? (
-          <div style={{ color: '#64748b', fontStyle: 'italic', padding: '6px 0' }}>
-            [00:00:00] Verification engine idle. Ready for execution...
+          <div style={{ color: '#86efac', fontStyle: 'italic', padding: '6px 0' }}>
+            [00:00:00] [MINDBRIDGE] Verification engine initialized. Ready for execution...
           </div>
         ) : (
           logs.map((log, index) => (

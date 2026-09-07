@@ -4,7 +4,7 @@ import { CheckCircle2, XCircle, AlertTriangle } from 'lucide-react';
 export default function VerificationCard({ verifyData }) {
   if (!verifyData) {
     return (
-      <div className="mono-box" style={{ textAlign: 'center', padding: '16px', color: '#64748b' }}>
+      <div className="mono-box-goa" style={{ textAlign: 'center', padding: '16px', color: '#64748b' }}>
         Biometric verification pending execution...
       </div>
     );
@@ -15,21 +15,21 @@ export default function VerificationCard({ verifyData }) {
   const isRejected = status === 'NOT VERIFIED';
 
   const bannerClass = isVerified
-    ? 'verdict-banner is-verified'
+    ? 'verdict-banner-goa is-verified'
     : isRejected
-    ? 'verdict-banner is-rejected'
-    : 'verdict-banner is-nomatch';
+    ? 'verdict-banner-goa is-rejected'
+    : 'verdict-banner-goa is-nomatch';
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
       <div className={bannerClass}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           {isVerified ? (
-            <CheckCircle2 style={{ width: 22, height: 22, color: '#10b981' }} />
+            <CheckCircle2 style={{ width: 26, height: 26, color: '#166534' }} />
           ) : isRejected ? (
-            <XCircle style={{ width: 22, height: 22, color: '#f43f5e' }} />
+            <XCircle style={{ width: 26, height: 26, color: '#991b1b' }} />
           ) : (
-            <AlertTriangle style={{ width: 22, height: 22, color: '#f59e0b' }} />
+            <AlertTriangle style={{ width: 26, height: 26, color: '#92400e' }} />
           )}
           <div>
             <div className="verdict-title">{status}</div>
@@ -45,18 +45,18 @@ export default function VerificationCard({ verifyData }) {
 
         <div>
           <div className="verdict-score">{verifyData.similarity_percentage || '0.0%'}</div>
-          <div style={{ fontSize: '0.62rem', color: '#94a3b8', textAlign: 'right', fontFamily: 'var(--font-mono)' }}>SIMILARITY</div>
+          <div style={{ fontSize: '0.65rem', fontWeight: 800, textAlign: 'right', fontFamily: 'var(--font-mono)' }}>SIMILARITY</div>
         </div>
       </div>
 
-      <div className="mono-box" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+      <div className="mono-box-goa" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <span style={{ color: '#64748b' }}>SOURCE PLATFORM:</span>
-          <span style={{ color: '#f1f5f9', fontWeight: 700 }}>{verifyData.source_platform || 'N/A'}</span>
+          <span style={{ color: '#475569' }}>SOURCE PLATFORM:</span>
+          <span style={{ color: '#021a0e', fontWeight: 900 }}>{verifyData.source_platform || 'N/A'}</span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <span style={{ color: '#64748b' }}>MATCHED SHA-256:</span>
-          <span style={{ color: '#06b6d4', maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <span style={{ color: '#475569' }}>MATCHED SHA-256:</span>
+          <span style={{ color: '#ff007f', fontWeight: 800, maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {verifyData.matched_image_hash || '0x000000000000...'}
           </span>
         </div>
