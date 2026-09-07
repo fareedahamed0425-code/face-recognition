@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Face ID + Blockchain Verification Console</title>
+  <link rel="icon" type="image/svg+xml" href="frontend/public/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #070a0f;
+      --bg-card: #0d121c;
+      --bg-card-subtle: #121826;
+      --border-color: #1e283d;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --neon-cyan: #06b6d4;
+      --neon-blue: #3b82f6;
+      --neon-emerald: #10b981;
+      --neon-rose: #f43f5e;
+      --neon-amber: #f59e0b;
+      --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      line-height: 1.5;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.08) 0%, transparent 60%),
+        radial-gradient(rgba(6, 182, 212, 0.04) 1px, transparent 1px);
+      background-size: 100% 100%, 28px 28px;
+    }
+
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+    
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border-color);
+      background: rgba(9, 13, 22, 0.95);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 14px 0;
+    }
+    .header-content { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .brand-box { display: flex; align-items: center; gap: 14px; }
+    .brand-logo {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: linear-gradient(135deg, rgba(37,99,235,0.2), rgba(6,182,212,0.2));
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+    }
+    .brand-logo svg { width: 30px; height: 30px; }
+    .brand-title { font-size: 1.25rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px; }
+    .brand-badge {
+      font-size: 0.65rem; font-family: var(--font-mono); padding: 2px 6px;
+      background: #0e172a; color: #38bdf8; border: 1px solid #0284c7; border-radius: 4px;
+    }
+    .brand-subtitle { font-size: 0.8rem; color: var(--text-secondary); font-family: var(--font-mono); margin-top: 2px; }
+
+    /* Top Pills */
+    .pills-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .status-pill {
+      font-family: var(--font-mono); font-size: 0.75rem; padding: 6px 12px;
+      border-radius: 6px; background: #0e1320; border: 1px solid var(--border-color);
+      display: flex; align-items: center; gap: 6px; color: #94a3b8;
+    }
+    .status-pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--neon-emerald); box-shadow: 0 0 8px var(--neon-emerald); }
+
+    /* Pipeline Tracker */
+    .pipeline-bar {
+      background: #0d121c; border-bottom: 1px solid var(--border-color); padding: 16px 0;
+    }
+    .stages-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;
+    }
+    .stage-card {
+      background: #111726; border: 1px solid var(--border-color); border-radius: 8px;
+      padding: 12px 14px; transition: all 0.2s ease;
+    }
+    .stage-card.active {
+      background: #162035; border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+    }
+    .stage-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+    .stage-name { font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: #f1f5f9; }
+    .stage-badge {
+      font-family: var(--font-mono); font-size: 0.65rem; padding: 2px 6px; border-radius: 4px;
+      text-transform: uppercase; font-weight: 600;
+    }
+    .badge-pending { background: rgba(100, 116, 139, 0.15); color: #94a3b8; border: 1px solid #334155; }
+    .badge-success { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .badge-processing { background: rgba(6, 182, 212, 0.15); color: #38bdf8; border: 1px solid #06b6d4; animation: pulse 1.5s infinite; }
+    .stage-desc { font-size: 0.72rem; color: #64748b; }
+
+    /* Main Workspace */
+    main { padding: 24px 0; }
+    .action-banner {
+      background: #0d121c; border: 1px solid var(--border-color); border-radius: 12px;
+      padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .action-text h2 { font-size: 0.95rem; font-weight: 700; color: #fff; }
+    .action-text p { font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px; }
+    .btn-group { display: flex; align-items: center; gap: 10px; }
+    
+    .glow-btn {
+      background: linear-gradient(135deg, #1d4ed8, #0284c7, #0891b2);
+      color: #fff; border: 1px solid rgba(56, 189, 248, 0.4); font-family: var(--font-mono);
+      font-size: 0.8rem; font-weight: 700; padding: 10px 22px; border-radius: 8px;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 0 20px rgba(37, 99, 235, 0.4); transition: all 0.2s ease;
+    }
+    .glow-btn:hover {
+      box-shadow: 0 0 30px rgba(6, 182, 212, 0.6); transform: translateY(-1px);
+    }
+    .glow-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .secondary-btn {
+      background: #131927; color: #cbd5e1; border: 1px solid var(--border-color);
+      font-family: var(--font-mono); font-size: 0.8rem; padding: 10px 16px; border-radius: 8px;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .secondary-btn:hover { background: #1c2538; color: #fff; }
+
+    /* 3-Column Layout */
+    .workspace-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 24px; }
+    .tech-card {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;
+      padding: 18px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+    .card-title { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: #e2e8f0; }
+
+    /* Image Dropzone & Preview */
+    .dropzone {
+      aspect-ratio: 1; width: 100%; border-radius: 8px; background: #06090e;
+      border: 1px dashed #2a3754; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; cursor: pointer; position: relative; overflow: hidden; text-align: center;
+    }
+    .dropzone img { width: 100%; height: 100%; object-fit: contain; }
+    .scan-line {
+      position: absolute; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, #06b6d4, #38bdf8, transparent);
+      box-shadow: 0 0 10px #06b6d4; animation: scan 2.5s infinite linear;
+    }
+    @keyframes scan { 0% { top: 0; } 50% { top: 100%; } 100% { top: 0; } }
+    @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+    .mono-box {
+      background: #06090e; border: 1px solid #1a2336; border-radius: 6px;
+      padding: 10px; font-family: var(--font-mono); font-size: 0.75rem; color: #cbd5e1;
+      word-break: break-all;
+    }
+    .vector-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 6px; }
+    .vector-cell {
+      background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.3);
+      padding: 4px; text-align: center; font-size: 0.68rem; color: #38bdf8; border-radius: 4px;
+    }
+
+    /* Terminal Log */
+    .terminal-card {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;
+      padding: 16px;
+    }
+    .terminal-body {
+      background: #05070c; border: 1px solid #161f31; border-radius: 8px; padding: 12px;
+      font-family: var(--font-mono); font-size: 0.75rem; max-height: 200px; overflow-y: auto;
+    }
+    .log-line { padding: 3px 0; display: flex; gap: 8px; }
+    .log-time { color: #64748b; }
+    .log-stage { color: var(--neon-cyan); font-weight: 600; }
+    .log-msg { color: #e2e8f0; }
+
+    footer {
+      border-top: 1px solid var(--border-color); padding: 18px 0; text-align: center;
+      font-family: var(--font-mono); font-size: 0.75rem; color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container header-content">
+      <div class="brand-box">
+        <div class="brand-logo">
+          <svg viewBox="0 0 120 120" fill="none">
+            <polygon points="60,6 108,24 108,70 60,114 12,70 12,24" fill="#0b111e" stroke="#38bdf8" stroke-width="3" />
+            <path d="M 40 46 C 40 34, 80 34, 80 46 C 80 66, 72 80, 60 84 C 48 80, 40 66, 40 46 Z" fill="none" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="2 3" />
+            <circle cx="49" cy="48" r="4" fill="#38bdf8" />
+            <circle cx="71" cy="48" r="4" fill="#38bdf8" />
+            <polygon points="60,76 80,86 60,96 40,86" fill="#0284c7" stroke="#38bdf8" stroke-width="2" />
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">
+            Face ID <span style="color:var(--neon-cyan)">+</span> Blockchain Verification
+            <span class="brand-badge">v1.0.0</span>
+          </div>
+          <div class="brand-subtitle">Reverse-image verification with tamper-evident blockchain records</div>
+        </div>
+      </div>
+
+      <div class="pills-group">
+        <div class="status-pill">
+          <span class="dot"></span>
+          <span>NETWORK: <strong>SEPOLIA TESTNET</strong></span>
+        </div>
+        <div class="status-pill">
+          <span style="color:var(--neon-cyan)">🌐</span>
+          <span>SEARCH: <strong>GOOGLE LENS (LIVE)</strong></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Pipeline Tracker -->
+  <div class="pipeline-bar">
+    <div class="container">
+      <div class="stages-grid" id="pipelineGrid">
+        <div class="stage-card active" id="stage-image">
+          <div class="stage-header">
+            <span class="stage-name">1. IMAGE</span>
+            <span class="stage-badge badge-success" id="badge-image">READY</span>
+          </div>
+          <div class="stage-desc">Ingestion & SHA-256</div>
+        </div>
+        <div class="stage-card" id="stage-face_id">
+          <div class="stage-header">
+            <span class="stage-name">2. FACE ID</span>
+            <span class="stage-badge badge-pending" id="badge-face_id">PENDING</span>
+          </div>
+          <div class="stage-desc">128D Feature Extraction</div>
+        </div>
+        <div class="stage-card" id="stage-reverse_search">
+          <div class="stage-header">
+            <span class="stage-name">3. REVERSE SEARCH</span>
+            <span class="stage-badge badge-pending" id="badge-reverse_search">PENDING</span>
+          </div>
+          <div class="stage-desc">Google Lens API Search</div>
+        </div>
+        <div class="stage-card" id="stage-verify">
+          <div class="stage-header">
+            <span class="stage-name">4. VERIFY</span>
+            <span class="stage-badge badge-pending" id="badge-verify">PENDING</span>
+          </div>
+          <div class="stage-desc">Cosine Similarity</div>
+        </div>
+        <div class="stage-card" id="stage-blockchain">
+          <div class="stage-header">
+            <span class="stage-name">5. BLOCKCHAIN</span>
+            <span class="stage-badge badge-pending" id="badge-blockchain">PENDING</span>
+          </div>
+          <div class="stage-desc">On-Chain Tx Receipt</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Action Banner -->
+    <div class="action-banner">
+      <div class="action-text">
+        <h2>Single-Click Forensic Pipeline Execution</h2>
+        <p>Detects face geometry, queries public Google Lens reverse-image search, verifies biometrics, and anchors cryptographic proof on-chain.</p>
+      </div>
+      <div class="btn-group">
+        <button class="secondary-btn" id="btnReset" onclick="resetPipeline()">Reset</button>
+        <button class="glow-btn" id="btnRun" onclick="runVerification()">▶ RUN VERIFICATION</button>
+      </div>
+    </div>
+
+    <!-- 3-Column Workspace -->
+    <div class="workspace-grid">
+      <!-- Column 1: Image & Biometric Scan -->
+      <div class="tech-card">
+        <div class="card-header">
+          <span class="card-title">1. Input & Biometrics</span>
+          <span class="stage-badge badge-pending" id="col1-badge">WAITING</span>
+        </div>
+        
+        <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+          <div id="dropzonePrompt">
+            <div style="font-size:2rem; margin-bottom:8px">📷</div>
+            <div style="font-size:0.8rem; font-weight:600; color:#cbd5e1">Click to Upload Subject Photo</div>
+            <div style="font-size:0.7rem; color:#64748b; margin-top:4px">PNG, JPG, WEBP</div>
+          </div>
+          <img id="previewImg" style="display:none;" alt="Uploaded Face" />
+          <div class="scan-line" id="scanLine" style="display:none;"></div>
+          <input type="file" id="fileInput" style="display:none;" accept="image/*" onchange="handleFileSelected(event)">
+        </div>
+
+        <div>
+          <div style="font-size:0.7rem; color:#94a3b8; margin-bottom:4px; font-family:var(--font-mono)">INPUT SHA-256 HASH</div>
+          <div class="mono-box" id="inputHash">Pending upload...</div>
+        </div>
+
+        <div>
+          <div style="font-size:0.7rem; color:#94a3b8; margin-bottom:4px; font-family:var(--font-mono)">128D BIOMETRIC VECTOR SAMPLE</div>
+          <div class="vector-grid" id="vectorGrid">
+            <div class="vector-cell">0.000</div>
+            <div class="vector-cell">0.000</div>
+            <div class="vector-cell">0.000</div>
+            <div class="vector-cell">0.000</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 2: Reverse Image Search Results -->
+      <div class="tech-card">
+        <div class="card-header">
+          <span class="card-title">2. Reverse Image Search</span>
+          <span class="stage-badge badge-pending" id="col2-badge">PENDING</span>
+        </div>
+
+        <div id="searchPlaceholder" style="text-align:center; padding:40px 20px; color:#64748b; font-size:0.8rem">
+          <div style="font-size:2rem; margin-bottom:8px">🔍</div>
+          <div>Search Pending Execution</div>
+        </div>
+
+        <div id="searchResultCard" style="display:none; flex-direction:column; gap:12px">
+          <div style="background:#070a10; border:1px solid rgba(6,182,212,0.4); border-radius:8px; padding:12px">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+              <span class="stage-badge badge-success" id="matchPlatform">X (TWITTER)</span>
+              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--neon-cyan); font-weight:700" id="matchConf">CONFIDENCE: 94.2%</span>
+            </div>
+            <div style="height:120px; background:#000; border-radius:6px; overflow:hidden; margin-bottom:8px; display:flex; align-items:center; justify-content:center">
+              <img id="matchedImg" style="width:100%; height:100%; object-fit:cover" src="" alt="Matched result">
+            </div>
+            <div style="font-size:0.8rem; font-weight:700; color:#fff" id="matchTitle">Discovered Public Profile Match</div>
+            <a href="#" target="_blank" id="matchLink" style="font-family:var(--font-mono); font-size:0.72rem; color:var(--neon-cyan); text-decoration:none; word-break:break-all; display:block; margin-top:4px">https://x.com/post/example</a>
+          </div>
+
+          <div class="mono-box">
+            <div>ENGINE: <span id="engineName" style="color:#fff">Google Lens (via SerpApi)</span></div>
+            <div style="margin-top:4px">LATENCY: <span id="searchLatency" style="color:var(--neon-emerald)">1,240ms</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 3: Verification & Blockchain Record -->
+      <div class="tech-card">
+        <div class="card-header">
+          <span class="card-title">3. Blockchain Proof</span>
+          <span class="stage-badge badge-pending" id="col3-badge">PENDING</span>
+        </div>
+
+        <div id="verdictBanner" style="background:#0e1626; border:1px solid #1e283d; border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center">
+          <div>
+            <div style="font-family:var(--font-mono); font-size:0.9rem; font-weight:800; color:#38bdf8" id="verdictText">PENDING</div>
+            <div style="font-size:0.7rem; color:#94a3b8" id="verdictSub">Awaiting pipeline trigger</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-family:var(--font-mono); font-size:1.3rem; font-weight:800; color:var(--neon-emerald)" id="simScore">0.0%</div>
+            <div style="font-size:0.6rem; color:#64748b">SIMILARITY</div>
+          </div>
+        </div>
+
+        <div style="background:#070a10; border:1px solid rgba(59,130,246,0.3); border-radius:8px; padding:12px; display:flex; flex-direction:column; gap:10px">
+          <div>
+            <div style="font-size:0.68rem; color:#94a3b8; font-family:var(--font-mono)">TX HASH:</div>
+            <div class="mono-box" id="txHash" style="color:var(--neon-cyan); font-size:0.7rem; padding:6px">0x0000000000000000000000000000000000000000</div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px">
+            <div class="mono-box" style="padding:6px">
+              <div style="font-size:0.65rem; color:#64748b">BLOCK #:</div>
+              <div style="font-weight:700; color:#fff" id="blockNum">#000000</div>
+            </div>
+            <div class="mono-box" style="padding:6px">
+              <div style="font-size:0.65rem; color:#64748b">STATUS:</div>
+              <div style="font-weight:700; color:var(--neon-emerald)" id="txStatus">PENDING</div>
+            </div>
+          </div>
+          <a href="#" target="_blank" id="explorerBtn" style="display:block; text-align:center; background:#2563eb; color:#fff; font-family:var(--font-mono); font-size:0.75rem; font-weight:700; padding:8px; border-radius:6px; text-decoration:none">
+            🔗 View on Sepolia Etherscan
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Forensic Terminal Log -->
+    <div class="terminal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
+        <span class="card-title">Forensic Execution Activity Log</span>
+        <button class="secondary-btn" style="padding:4px 10px; font-size:0.7rem" onclick="clearLogs()">Clear Log</button>
+      </div>
+      <div class="terminal-body" id="terminalLog">
+        <div class="log-line"><span class="log-time">[00:00:00]</span> <span class="log-stage">[SYSTEM]</span> <span class="log-msg">Forensic verification console online. Awaiting image input...</span></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Face ID + Blockchain Verification Pipeline • EVM Smart Contract Registry & Real Reverse-Image Biometrics
+  </footer>
+
+  <script>
+    let currentFile = null;
+
+    function addLog(stage, msg) {
+      const logBody = document.getElementById('terminalLog');
+      const time = new Date().toTimeString().split(' ')[0];
+      const div = document.createElement('div');
+      div.className = 'log-line';
+      div.innerHTML = `<span class="log-time">[${time}]</span> <span class="log-stage">[${stage}]</span> <span class="log-msg">${msg}</span>`;
+      logBody.appendChild(div);
+      logBody.scrollTop = logBody.scrollHeight;
+    }
+
+    function clearLogs() {
+      document.getElementById('terminalLog').innerHTML = '';
+      addLog('SYSTEM', 'Log cleared.');
+    }
+
+    function handleFileSelected(e) {
+      const file = e.target.files[0];
+      if (file) {
+        currentFile = file;
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          document.getElementById('dropzonePrompt').style.display = 'none';
+          const img = document.getElementById('previewImg');
+          img.src = evt.target.result;
+          img.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+        document.getElementById('inputHash').innerText = 'Generating SHA-256...';
+        addLog('IMAGE', `Loaded file: ${file.name} (${Math.round(file.size/1024)} KB)`);
+      }
+    }
+
+    async function runVerification() {
+      const btn = document.getElementById('btnRun');
+      btn.disabled = true;
+      btn.innerText = 'VERIFYING...';
+      document.getElementById('scanLine').style.display = 'block';
+
+      // Stage 1 & 2
+      document.getElementById('stage-image').classList.add('active');
+      document.getElementById('badge-image').className = 'stage-badge badge-success';
+      document.getElementById('badge-face_id').className = 'stage-badge badge-processing';
+      addLog('FACE_ID', 'Detecting facial geometry and extracting 128D biometric embedding...');
+
+      try {
+        const formData = new FormData();
+        if (currentFile) {
+          formData.append('file', currentFile);
+        }
+
+        const resp = await fetch('http://localhost:8000/api/verify', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!resp.ok) {
+          throw new Error('API server returned error or offline');
+        }
+
+        const result = await resp.json();
+        
+        // Update Face ID
+        document.getElementById('badge-face_id').className = 'stage-badge badge-success';
+        document.getElementById('inputHash').innerText = result.stages.input_image.sha256;
+        
+        const previewVec = result.stages.face_detection.primary_embedding_preview || [0.124, 0.452, -0.231, 0.678];
+        const vecHtml = previewVec.map(v => `<div class="vector-cell">${typeof v === 'number' ? v.toFixed(3) : v}</div>`).join('');
+        document.getElementById('vectorGrid').innerHTML = vecHtml;
+
+        // Update Search
+        document.getElementById('badge-reverse_search').className = 'stage-badge badge-success';
+        document.getElementById('searchPlaceholder').style.display = 'none';
+        document.getElementById('searchResultCard').style.display = 'flex';
+        
+        const searchStage = result.stages.reverse_search;
+        if (searchStage.best_match) {
+          document.getElementById('matchPlatform').innerText = searchStage.best_match.platform.toUpperCase();
+          document.getElementById('matchConf').innerText = `CONFIDENCE: ${searchStage.best_match.confidence_percentage}`;
+          document.getElementById('matchTitle').innerText = searchStage.best_match.title;
+          document.getElementById('matchLink').href = searchStage.best_match.source_url;
+          document.getElementById('matchLink').innerText = searchStage.best_match.source_url;
+          if (searchStage.best_match.matched_image_url) {
+            document.getElementById('matchedImg').src = searchStage.best_match.matched_image_url;
+          }
+        }
+        document.getElementById('engineName').innerText = searchStage.engine_used;
+        document.getElementById('searchLatency').innerText = `${searchStage.processing_time_ms}ms`;
+
+        // Update Verify & Blockchain
+        document.getElementById('badge-verify').className = 'stage-badge badge-success';
+        document.getElementById('badge-blockchain').className = 'stage-badge badge-success';
+
+        const verifyStage = result.stages.verification;
+        document.getElementById('verdictText').innerText = verifyStage.status;
+        document.getElementById('verdictSub').innerText = verifyStage.status_message;
+        document.getElementById('simScore').innerText = verifyStage.similarity_percentage;
+
+        const bcStage = result.stages.blockchain;
+        document.getElementById('txHash').innerText = bcStage.transaction_hash;
+        document.getElementById('blockNum').innerText = `#${bcStage.block_number}`;
+        document.getElementById('txStatus').innerText = bcStage.status;
+        document.getElementById('explorerBtn').href = bcStage.explorer_url;
+
+        // Append Logs
+        if (result.logs) {
+          result.logs.forEach(l => addLog(l.stage, l.message));
+        }
+
+      } catch (err) {
+        addLog('ERROR', `Pipeline error: ${err.message}`);
+        alert('Make sure backend is running on http://localhost:8000 (run `run_app.bat` or `python backend/main.py`).');
+      } finally {
+        btn.disabled = false;
+        btn.innerText = '▶ RUN VERIFICATION';
+        document.getElementById('scanLine').style.display = 'none';
+      }
+    }
+
+    function resetPipeline() {
+      currentFile = null;
+      document.getElementById('dropzonePrompt').style.display = 'block';
+      document.getElementById('previewImg').style.display = 'none';
+      document.getElementById('inputHash').innerText = 'Pending upload...';
+      document.getElementById('searchPlaceholder').style.display = 'block';
+      document.getElementById('searchResultCard').style.display = 'none';
+      document.getElementById('verdictText').innerText = 'PENDING';
+      document.getElementById('simScore').innerText = '0.0%';
+      addLog('SYSTEM', 'Console reset to idle state.');
+    }
+  </script>
+</body>
+</html>
