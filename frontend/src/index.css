@@ -1,10 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Syne:wght@700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,700&family=JetBrains+Mono:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Syne:wght@700;800;900&display=swap');
 
 :root {
-  --goa-green: #0d5c36;
-  --goa-green-dark: #073b22;
-  --goa-green-deep: #032415;
-  --goa-green-light: #12824c;
+  /* Lighter, rich tropical green palette */
+  --goa-green: #12824c;
+  --goa-green-light: #169b59;
+  --goa-green-bright: #1bb367;
+  --goa-green-dark: #0d6b3c;
+  --goa-green-deep: #08522c;
   
   --goa-yellow: #ffd000;
   --goa-yellow-light: #ffde38;
@@ -14,18 +16,18 @@
   --goa-pink-hover: #e6006f;
   --goa-pink-pale: #ffe6f2;
   
-  --goa-sand: #fef8e7;
+  --goa-sand: #fdfbf4;
   --goa-white: #ffffff;
-  --goa-black: #021a0e;
+  --goa-black: #052616;
   
   --border-thick: 2.5px solid var(--goa-black);
   --pop-shadow: 4px 4px 0px var(--goa-black);
   --pop-shadow-lg: 6px 6px 0px var(--goa-black);
   --pop-shadow-sm: 2.5px 2.5px 0px var(--goa-black);
 
-  --font-display: 'Syne', 'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-serif: 'Cinzel', serif;
-  --font-body: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-display: 'Outfit', 'Syne', sans-serif;
+  --font-body: 'Outfit', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
@@ -42,8 +44,8 @@ body {
   min-height: 100vh;
   line-height: 1.5;
   background-image: 
-    radial-gradient(circle at 50% 12%, rgba(255, 208, 0, 0.18) 0%, transparent 65%),
-    linear-gradient(180deg, #0d5c36 0%, #084226 50%, #042616 100%);
+    radial-gradient(circle at 50% 10%, rgba(255, 208, 0, 0.22) 0%, transparent 60%),
+    linear-gradient(180deg, #158f54 0%, #107844 45%, #0c6237 100%);
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
 }
@@ -68,16 +70,14 @@ body {
 }
 
 /* =================================================================
-   HEADER - HACKER HOUSE GOA / MINDBRIDGE STYLE
+   HEADER - SCROLLS NATURALLY WITH PAGE (NON-STICKY)
    ================================================================= */
 .console-header {
   border-bottom: var(--border-thick);
   background: var(--goa-green-dark);
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  padding: 14px 0;
-  box-shadow: 0 6px 0px rgba(2, 26, 14, 0.4);
+  position: relative; /* Scrolls naturally with page */
+  padding: 16px 0;
+  box-shadow: 0 6px 0px rgba(5, 38, 22, 0.35);
 }
 
 .header-inner {
@@ -95,8 +95,8 @@ body {
 }
 
 .brand-logo-frame {
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
   border-radius: 14px;
   background: var(--goa-yellow);
   border: var(--border-thick);
@@ -145,9 +145,9 @@ body {
 .goa-tag {
   background: var(--goa-yellow);
   color: var(--goa-black);
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-weight: 900;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   padding: 2px 8px;
   border-radius: 4px;
   border: 2px solid var(--goa-black);
@@ -156,9 +156,9 @@ body {
 }
 
 .brand-title {
-  font-size: 1.35rem;
+  font-size: 1.45rem;
   font-weight: 900;
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   color: var(--goa-sand);
   letter-spacing: -0.01em;
   margin-top: 4px;
@@ -166,13 +166,14 @@ body {
 
 .brand-title span.accent-yellow {
   color: var(--goa-yellow);
-  text-shadow: 1.5px 1.5px 0px var(--goa-black);
+  font-family: var(--font-serif);
 }
 
 .brand-subtitle {
-  font-size: 0.78rem;
-  color: #e2f0d9;
-  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: #e8f5e9;
+  font-family: var(--font-display);
+  font-weight: 600;
   margin-top: 2px;
 }
 
@@ -184,8 +185,8 @@ body {
 }
 
 .diag-pill-goa {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
   padding: 8px 14px;
   border-radius: 8px;
   background: var(--goa-sand);
@@ -200,6 +201,7 @@ body {
 
 .diag-pill-goa strong {
   color: var(--goa-green-dark);
+  font-weight: 900;
 }
 
 .status-dot-green {
@@ -213,7 +215,7 @@ body {
 
 .audit-export-btn {
   font-family: var(--font-display);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 900;
   padding: 8px 14px;
   border-radius: 8px;
@@ -286,14 +288,14 @@ body {
 
 .stage-title {
   font-family: var(--font-display);
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 900;
   color: var(--goa-black);
 }
 
 .stage-badge-goa {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
   font-weight: 800;
   padding: 2px 7px;
   border-radius: 4px;
@@ -333,7 +335,7 @@ body {
 }
 
 .stage-desc {
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   color: #334155;
   font-weight: 600;
   margin-top: 2px;
@@ -352,7 +354,7 @@ body {
   color: var(--goa-black);
   border: var(--border-thick);
   border-radius: 14px;
-  padding: 20px 24px;
+  padding: 22px 26px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -365,14 +367,14 @@ body {
 }
 
 .action-banner-info h2 {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 900;
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   letter-spacing: -0.01em;
 }
 
 .action-banner-info p {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: #1e293b;
   font-weight: 600;
   margin-top: 3px;
@@ -388,7 +390,7 @@ body {
   background: var(--goa-pink);
   color: #ffffff;
   font-family: var(--font-display);
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   font-weight: 900;
   letter-spacing: 0.04em;
   padding: 14px 28px;
@@ -424,7 +426,7 @@ body {
   background: var(--goa-sand);
   color: var(--goa-black);
   font-family: var(--font-display);
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 800;
   padding: 13px 20px;
   border-radius: 10px;
@@ -490,12 +492,11 @@ body {
 }
 
 .card-title {
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 900;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 800;
   color: var(--goa-black);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.01em;
 }
 
 /* Image Dropzone Box */
@@ -504,7 +505,7 @@ body {
   width: 100%;
   border-radius: 10px;
   background: #ffffff;
-  border: 2.5px dashed #094528;
+  border: 2.5px dashed #0e7742;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -558,9 +559,9 @@ body {
   left: 0;
   background: var(--goa-black);
   color: var(--goa-yellow);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 900;
   padding: 2px 7px;
   border-radius: 4px;
   white-space: nowrap;
@@ -619,7 +620,7 @@ body {
 
 .platform-tag-goa {
   font-family: var(--font-display);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 900;
   padding: 4px 10px;
   border-radius: 6px;
@@ -647,17 +648,18 @@ body {
 }
 
 .match-title {
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 800;
+  font-family: var(--font-display);
   color: var(--goa-black);
   line-height: 1.3;
 }
 
 .match-link-goa {
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  color: #0d5c36;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  color: #0e7742;
+  font-weight: 800;
   text-decoration: none;
   word-break: break-all;
   display: flex;
@@ -697,21 +699,21 @@ body {
 }
 
 .verdict-title {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
   font-weight: 900;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
 }
 
 .verdict-sub {
-  font-size: 0.74rem;
+  font-size: 0.76rem;
   font-weight: 600;
   margin-top: 2px;
 }
 
 .verdict-score {
-  font-family: var(--font-mono);
-  font-size: 1.5rem;
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
   font-weight: 900;
   text-align: right;
   line-height: 1.1;
@@ -750,7 +752,7 @@ body {
 }
 
 .stat-val {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 900;
   color: var(--goa-black);
   margin-top: 2px;
@@ -760,7 +762,7 @@ body {
   background: var(--goa-green-dark);
   color: var(--goa-yellow);
   font-family: var(--font-display);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 900;
   padding: 12px 16px;
   border-radius: 8px;
@@ -775,7 +777,7 @@ body {
 }
 
 .explorer-btn-goa:hover {
-  background: var(--goa-green);
+  background: var(--goa-green-light);
   transform: translate(-1px, -1px);
   box-shadow: 4px 4px 0px var(--goa-black);
 }
@@ -801,7 +803,7 @@ body {
 }
 
 .terminal-window-goa {
-  background: #021a0e;
+  background: #052616;
   border: 2px solid var(--goa-black);
   border-radius: 10px;
   padding: 16px;
@@ -827,10 +829,10 @@ body {
   color: var(--goa-yellow);
   font-weight: 800;
   font-size: 0.72rem;
-  background: #064e2e;
+  background: #0e7742;
   padding: 1px 7px;
   border-radius: 4px;
-  border: 1px solid #107545;
+  border: 1px solid #169b59;
 }
 .terminal-line .t-msg { color: #f8fafc; word-break: break-all; }
 
@@ -838,9 +840,9 @@ footer.console-footer-goa {
   border-top: var(--border-thick);
   padding: 22px 0;
   text-align: center;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 800;
   color: var(--goa-sand);
-  font-weight: 700;
   background: var(--goa-green-deep);
 }
