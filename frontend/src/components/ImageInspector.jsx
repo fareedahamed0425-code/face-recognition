@@ -1,16 +1,15 @@
-import React, { useRef } from 'react';
-import { Upload, Scan, Hash, Sparkles, Check, Copy } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { Scan, Upload, Copy, Check, Sparkles } from 'lucide-react';
 
 export default function ImageInspector({
   imagePreview,
   onImageSelected,
   faceData,
   imageHash,
-  isProcessing,
-  fileMeta
+  isProcessing
 }) {
   const fileInputRef = useRef(null);
-  const [copiedHash, setCopiedHash] = React.useState(false);
+  const [copiedHash, setCopiedHash] = useState(false);
 
   const handleCopyHash = () => {
     if (imageHash) {
@@ -30,61 +29,50 @@ export default function ImageInspector({
   const primaryFace = faceData?.faces?.[0];
 
   return (
-    <div className="tech-card p-4 flex flex-col gap-4">
-      <div className="flex items-center justify-between border-b border-[#232d42] pb-3">
-        <div className="flex items-center gap-2">
-          <Scan className="w-4 h-4 text-cyan-400" />
-          <h2 className="text-sm font-bold tracking-wide text-slate-200 uppercase font-mono">
-            1. Input & Biometric Scan
-          </h2>
+    <div className="tech-card">
+      <div className="card-header-row">
+        <div className="card-title-box">
+          <Scan style={{ width: 16, height: 16, color: '#06b6d4' }} />
+          <span className="card-title">1. Input & Biometrics</span>
         </div>
         {faceData?.face_detected && (
-          <span className="tech-badge badge-success text-[10px]">
+          <span className="stage-badge badge-success">
             {faceData.face_count} FACE{faceData.face_count > 1 ? 'S' : ''} DETECTED
           </span>
         )}
       </div>
 
-      {/* Image Preview & Bounding Box Canvas */}
-      <div className="relative aspect-square w-full rounded-lg bg-[#0b0e17] border border-[#232d42] overflow-hidden flex items-center justify-center group">
+      {/* Image Dropzone Box */}
+      <div className="dropzone-box" onClick={() => fileInputRef.current?.click()}>
         {imagePreview ? (
           <>
-            <img
-              src={imagePreview}
-              alt="Query Face"
-              className="w-full h-full object-contain"
-            />
+            <img src={imagePreview} alt="Query Face" className="preview-img" />
 
-            {/* Bounding Box Overlay if face detected */}
             {primaryFace && (
               <div
-                className="absolute border-2 border-cyan-400/90 rounded-sm pointer-events-none transition-all duration-300"
+                className="bounding-box"
                 style={{
                   left: `${primaryFace.normalized_bbox.x * 100}%`,
                   top: `${primaryFace.normalized_bbox.y * 100}%`,
                   width: `${primaryFace.normalized_bbox.w * 100}%`,
-                  height: `${primaryFace.normalized_bbox.h * 100}%`,
-                  boxShadow: '0 0 14px rgba(6, 182, 212, 0.4)'
+                  height: `${primaryFace.normalized_bbox.h * 100}%`
                 }}
               >
-                <span className="absolute -top-5 left-0 px-1.5 py-0.5 rounded bg-cyan-950/90 border border-cyan-500/50 text-[10px] font-mono text-cyan-300">
+                <span className="bbox-label">
                   FACE 1 ({Math.round(primaryFace.confidence * 100)}%)
                 </span>
               </div>
             )}
 
-            {isProcessing && <div className="scan-overlay" />}
+            {isProcessing && <div className="scan-laser" />}
           </>
         ) : (
-          <div
-            onClick={() => fileInputRef.current?.click()}
-            className="flex flex-col items-center justify-center p-6 text-center cursor-pointer hover:border-blue-500/50 transition-colors w-full h-full"
-          >
-            <div className="p-3 rounded-full bg-[#161c2b] border border-[#232d42] text-slate-400 mb-3 group-hover:text-cyan-400 group-hover:scale-110 transition-all">
-              <Upload className="w-6 h-6" />
+          <div style={{ textAlign: 'center', padding: '20px' }}>
+            <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#111726', border: '1px solid #1e293d', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
+              <Upload style={{ width: 20, height: 20, color: '#38bdf8' }} />
             </div>
-            <p className="text-xs font-semibold text-slate-300">Click to Upload Subject Photo</p>
-            <p className="text-[11px] text-slate-500 mt-1">PNG, JPG, WEBP (Max 10MB)</p>
+            <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#f1f5f9' }}>Click to Upload Subject Photo</div>
+            <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '4px' }}>PNG, JPG, WEBP</div>
           </div>
         )}
 
@@ -92,67 +80,60 @@ export default function ImageInspector({
           ref={fileInputRef}
           type="file"
           accept="image/*"
-          className="hidden"
+          style={{ display: 'none' }}
           onChange={handleFileChange}
         />
       </div>
 
-      {/* Upload change button */}
       {imagePreview && (
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={isProcessing}
-          className="w-full py-1.5 px-3 rounded bg-[#161c2b] hover:bg-[#1c2336] border border-[#232d42] text-xs font-mono text-slate-300 transition-colors flex items-center justify-center gap-2"
+          className="secondary-btn"
+          style={{ width: '100%', justifyContent: 'center' }}
         >
-          <Upload className="w-3.5 h-3.5 text-cyan-400" />
-          Replace Image
+          <Upload style={{ width: 14, height: 14, color: '#06b6d4' }} />
+          <span>REPLACE SUBJECT PHOTO</span>
         </button>
       )}
 
-      {/* File & Detection Metadata */}
-      <div className="space-y-2.5 pt-1 text-xs">
-        {/* SHA-256 Digest */}
+      {/* SHA-256 Digest */}
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: '#94a3b8', marginBottom: '4px', fontFamily: 'var(--font-mono)' }}>
+          <span>INPUT SHA-256 DIGEST</span>
+          {imageHash && (
+            <button
+              onClick={handleCopyHash}
+              style={{ background: 'none', border: 'none', color: '#38bdf8', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.7rem' }}
+            >
+              {copiedHash ? <Check style={{ width: 12, height: 12, color: '#10b981' }} /> : <Copy style={{ width: 12, height: 12 }} />}
+              <span>{copiedHash ? 'COPIED' : 'COPY'}</span>
+            </button>
+          )}
+        </div>
+        <div className="mono-box">
+          {imageHash || 'Pending upload...'}
+        </div>
+      </div>
+
+      {/* Biometric Feature Vector Preview */}
+      {faceData?.primary_embedding_preview && (
         <div>
-          <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-            <span className="flex items-center gap-1 font-mono">
-              <Hash className="w-3 h-3 text-blue-400" /> INPUT SHA-256 HASH
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: '#94a3b8', marginBottom: '4px', fontFamily: 'var(--font-mono)' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Sparkles style={{ width: 12, height: 12, color: '#06b6d4' }} /> 128D BIOMETRIC VECTOR
             </span>
-            {imageHash && (
-              <button
-                onClick={handleCopyHash}
-                className="text-[10px] text-blue-400 hover:text-blue-300 flex items-center gap-1"
-              >
-                {copiedHash ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
-                {copiedHash ? 'COPIED' : 'COPY'}
-              </button>
-            )}
+            <span style={{ color: '#10b981', fontWeight: 700 }}>{faceData.processing_time_ms}ms</span>
           </div>
-          <div className="p-2 rounded bg-[#0b0e17] border border-[#232d42] font-mono text-[11px] text-slate-300 truncate">
-            {imageHash ? imageHash : <span className="text-slate-600">Pending upload...</span>}
+          <div className="vector-grid">
+            {faceData.primary_embedding_preview.map((val, i) => (
+              <div key={i} className="vector-cell">
+                {val.toFixed(3)}
+              </div>
+            ))}
           </div>
         </div>
-
-        {/* Biometric Feature Vector Preview */}
-        {faceData?.primary_embedding_preview && (
-          <div>
-            <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-              <span className="flex items-center gap-1 font-mono">
-                <Sparkles className="w-3 h-3 text-cyan-400" /> 128D BIOMETRIC VECTOR
-              </span>
-              <span className="text-[10px] font-mono text-emerald-400">
-                {faceData.processing_time_ms}ms
-              </span>
-            </div>
-            <div className="p-2 rounded bg-[#0b0e17] border border-[#232d42] font-mono text-[10px] text-cyan-300 grid grid-cols-4 gap-1">
-              {faceData.primary_embedding_preview.map((val, i) => (
-                <span key={i} className="px-1 py-0.5 rounded bg-cyan-950/40 border border-cyan-900/40 text-center">
-                  {val.toFixed(3)}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 }
